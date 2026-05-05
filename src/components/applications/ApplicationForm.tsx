@@ -54,7 +54,6 @@ export function ApplicationForm({ initialValues, applicationId }: ApplicationFor
 
       const data = await res.json();
       router.push(`/applications/${data.id}`);
-      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
