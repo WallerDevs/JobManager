@@ -18,7 +18,7 @@ export default async function ApplicationsPage() {
 
   return (
     <DashboardShell title="Applications">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <div className="flex justify-end">
           <Link href="/applications/new">
             <Button>New application</Button>
