@@ -270,7 +270,7 @@ function Hero() {
             <motion.span
               animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
               transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-              className="inline-block bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent"
+              className="inline-block bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent pt-3 pb-5"
               style={{ backgroundSize: "200% auto" }}
             >
               finally organized.
