@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "PowerShell(Remove-Item \"c:\\\\Users\\\\caspe\\\\OneDrive\\\\Desktop\\\\JobManager\\\\index.html\" ; Get-ChildItem \"c:\\\\Users\\\\caspe\\\\OneDrive\\\\Desktop\\\\JobManager\" -Recurse -Exclude node_modules,.next | Where-Object { $_.FullName -notmatch \"node_modules|\\\\.next\" } | Select-Object FullName)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(Get-ChildItem -Recurse -Depth 2)",
+      "Bash(Select-Object -Property FullName)"
     ]
   }
 }

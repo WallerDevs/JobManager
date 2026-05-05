@@ -54,16 +54,11 @@ function Navbar() {
   const borderColor = useTransform(rawBorder, (v) => `rgba(255,255,255,${v})`);
 
   return (
+    // suppressHydrationWarning: MotionValue styles differ between SSR and client initial render
     <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, ease: easeOut }}
-      className="fixed inset-x-0 top-[2px] z-50 flex items-center justify-between px-6 py-4 backdrop-blur-xl"
-      style={{
-        backgroundColor: bgColor,
-        borderBottom: "1px solid",
-        borderColor,
-      }}
+      suppressHydrationWarning
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-xl"
+      style={{ backgroundColor: bgColor, borderBottom: "1px solid", borderColor }}
     >
       <Link href="/" className="flex items-center gap-2.5">
         <motion.div
@@ -75,22 +70,10 @@ function Navbar() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </motion.div>
-        <motion.span
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2, duration: 0.4, ease: easeOut }}
-          className="text-sm font-semibold text-white"
-        >
-          JobManager
-        </motion.span>
+        <span className="text-sm font-semibold text-white">JobManager</span>
       </Link>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.35, duration: 0.5 }}
-        className="flex items-center gap-2"
-      >
+      <div className="flex items-center gap-2">
         <motion.div whileHover={{ y: -1 }} transition={spring}>
           <Link href="/login" className="px-4 py-1.5 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5">
             Sign in
@@ -101,7 +84,7 @@ function Navbar() {
             Get started
           </Link>
         </motion.div>
-      </motion.div>
+      </div>
     </motion.nav>
   );
 }
@@ -270,7 +253,7 @@ function Hero() {
             <motion.span
               animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
               transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-              className="inline-block bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent"
+              className="inline-block pt-2 pb-4 bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent"
               style={{ backgroundSize: "200% auto" }}
             >
               finally organized.

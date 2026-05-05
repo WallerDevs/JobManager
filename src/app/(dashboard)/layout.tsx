@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { ToastProvider } from "@/components/ui/Toast";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
-  return <>{children}</>;
+  return <ToastProvider>{children}</ToastProvider>;
 }
