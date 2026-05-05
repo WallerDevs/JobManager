@@ -6,7 +6,6 @@ import { DashboardShell } from "@/components/layout/DashboardShell";
 import { StatusBadge } from "@/components/applications/StatusBadge";
 import { Card, CardContent } from "@/components/ui/Card";
 import { formatDate } from "@/lib/utils";
-import { CommentSection } from "@/components/applications/CommentSection";
 import { StatusUpdater } from "@/components/applications/StatusUpdater";
 import { DocumentAttacher } from "@/components/applications/DocumentAttacher";
 import Link from "next/link";
@@ -24,10 +23,6 @@ export default async function ApplicationDetailPage({ params }: Props) {
     prisma.application.findFirst({
       where: { id, userId: session!.user.id },
       include: {
-        comments: {
-          include: { user: { select: { id: true, name: true } } },
-          orderBy: { createdAt: "asc" },
-        },
         documents: {
           include: { document: true },
           orderBy: { createdAt: "asc" },
@@ -111,8 +106,6 @@ export default async function ApplicationDetailPage({ params }: Props) {
           attachedDocs={application.documents}
           allDocs={allDocs}
         />
-
-        <CommentSection applicationId={application.id} comments={application.comments} />
       </div>
     </DashboardShell>
   );
