@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { DashboardShell } from "@/components/layout/DashboardShell";
-import { ApplicationCard } from "@/components/applications/ApplicationCard";
+import { ApplicationsClient } from "@/components/applications/ApplicationsClient";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
@@ -15,6 +15,12 @@ export default async function ApplicationsPage() {
     select: { id: true, companyName: true, jobTitle: true, status: true, appliedAt: true, createdAt: true },
     orderBy: { createdAt: "desc" },
   });
+
+  const serialized = applications.map((app) => ({
+    ...app,
+    appliedAt: app.appliedAt ? app.appliedAt.toISOString() : null,
+    createdAt: app.createdAt.toISOString(),
+  }));
 
   return (
     <DashboardShell title="Applications">
@@ -35,11 +41,7 @@ export default async function ApplicationsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {applications.map((app) => (
-              <ApplicationCard key={app.id} application={app} />
-            ))}
-          </div>
+          <ApplicationsClient applications={serialized} />
         )}
       </div>
     </DashboardShell>

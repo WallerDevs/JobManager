@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ApplicationSummary } from "@/types";
+import { SerializedApplicationSummary } from "@/types";
 import { StatusBadge } from "@/components/applications/StatusBadge";
 import { formatDate } from "@/lib/utils";
 
 interface ApplicationCardProps {
-  application: ApplicationSummary;
+  application: SerializedApplicationSummary;
 }
 
 export function ApplicationCard({ application }: ApplicationCardProps) {

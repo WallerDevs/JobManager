@@ -10,6 +10,15 @@ export type ApplicationSummary = Pick<
   "id" | "companyName" | "jobTitle" | "status" | "appliedAt" | "createdAt"
 >;
 
+export type SerializedApplicationSummary = {
+  id: string;
+  companyName: string;
+  jobTitle: string;
+  status: Application["status"];
+  appliedAt: string | null;
+  createdAt: string;
+};
+
 export type DocumentSummary = Pick<Document, "id" | "type" | "title" | "updatedAt">;
 
 export type CreateApplicationInput = {
