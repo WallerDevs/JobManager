@@ -88,7 +88,11 @@ export default async function DashboardPage() {
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {applications.map((app) => (
-                <ApplicationCard key={app.id} application={app} />
+                <ApplicationCard key={app.id} application={{
+                  ...app,
+                  appliedAt: app.appliedAt ? app.appliedAt.toISOString() : null,
+                  createdAt: app.createdAt.toISOString(),
+                }} />
               ))}
             </div>
           )}

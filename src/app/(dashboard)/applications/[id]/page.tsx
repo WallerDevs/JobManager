@@ -6,8 +6,8 @@ import { DashboardShell } from "@/components/layout/DashboardShell";
 import { StatusBadge } from "@/components/applications/StatusBadge";
 import { Card, CardContent } from "@/components/ui/Card";
 import { formatDate } from "@/lib/utils";
-import { CommentSection } from "@/components/applications/CommentSection";
 import { StatusUpdater } from "@/components/applications/StatusUpdater";
+import { DocumentAttacher } from "@/components/applications/DocumentAttacher";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
@@ -19,15 +19,22 @@ export default async function ApplicationDetailPage({ params }: Props) {
   const { id } = await params;
   const session = await getServerSession(authOptions);
 
-  const application = await prisma.application.findFirst({
-    where: { id, userId: session!.user.id },
-    include: {
-      comments: {
-        include: { user: { select: { id: true, name: true } } },
-        orderBy: { createdAt: "asc" },
+  const [application, allDocs] = await Promise.all([
+    prisma.application.findFirst({
+      where: { id, userId: session!.user.id },
+      include: {
+        documents: {
+          include: { document: true },
+          orderBy: { createdAt: "asc" },
+        },
       },
-    },
-  });
+    }),
+    prisma.document.findMany({
+      where: { userId: session!.user.id },
+      select: { id: true, title: true, type: true },
+      orderBy: { updatedAt: "desc" },
+    }),
+  ]);
 
   if (!application) notFound();
 
@@ -94,7 +101,11 @@ export default async function ApplicationDetailPage({ params }: Props) {
           </Card>
         )}
 
-        <CommentSection applicationId={application.id} comments={application.comments} />
+        <DocumentAttacher
+          applicationId={application.id}
+          attachedDocs={application.documents}
+          allDocs={allDocs}
+        />
       </div>
     </DashboardShell>
   );

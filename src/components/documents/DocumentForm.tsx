@@ -50,9 +50,7 @@ export function DocumentForm({ initialValues, documentId }: DocumentFormProps) {
         throw new Error(data.error ?? "Something went wrong");
       }
 
-      const data = await res.json();
-      router.push(`/documents/${data.id}`);
-      router.refresh();
+      router.push("/documents");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
