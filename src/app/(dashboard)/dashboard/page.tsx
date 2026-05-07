@@ -75,11 +75,7 @@ export default async function DashboardPage() {
 
           {applications.length === 0 ? (
             <div className="rounded-xl border border-dashed border-white/[0.07] bg-gray-900/50 p-10 flex flex-col items-center gap-4 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/10 ring-1 ring-brand-500/20">
-                <svg className="h-7 w-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
+              <img src="/logo.png" width={56} height={56} alt="JobManager" className="rounded-2xl opacity-80" />
               <div>
                 <p className="text-sm font-semibold text-gray-100">No applications yet</p>
                 <p className="mt-1 text-xs text-gray-500">Add your first one to get started.</p>

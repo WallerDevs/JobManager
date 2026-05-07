@@ -141,7 +141,7 @@ function AppPreview() {
         {/* Sidebar */}
         <div className="w-36 sm:w-44 bg-gray-950 border-r border-white/5 flex flex-col p-2.5 gap-0.5 flex-shrink-0">
           <div className="flex items-center gap-2 px-2 py-2 mb-1">
-            <div className="h-5 w-5 rounded-md bg-gradient-to-br from-emerald-500 to-green-600 flex-shrink-0" />
+            <img src="/logo.png" width={20} height={20} alt="JobManager" className="rounded-md flex-shrink-0" />
             <span className="text-xs font-semibold text-white hidden sm:block">JobManager</span>
           </div>
           {["Dashboard", "Applications", "Documents"].map((item, i) => (
