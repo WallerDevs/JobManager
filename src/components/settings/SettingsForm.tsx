@@ -79,34 +79,25 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-xl flex flex-col gap-6">
+    <div className="mx-auto max-w-xl flex flex-col gap-5">
       {/* Profile */}
-      <section className="rounded-xl border border-gray-100 bg-white shadow-card">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-medium text-gray-700">Profile</h2>
+      <section className="rounded-xl border border-white/[0.07] bg-gray-900 shadow-card">
+        <div className="px-5 py-4 border-b border-white/[0.06]">
+          <h2 className="text-sm font-semibold text-gray-200">Profile</h2>
         </div>
         <form onSubmit={saveProfile} className="flex flex-col gap-4 p-5">
           {profileError && (
-            <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{profileError}</div>
+            <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">
+              {profileError}
+            </div>
           )}
           {profileSuccess && (
-            <div className="rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">Profile updated.</div>
+            <div className="rounded-lg border border-emerald-900/50 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-400">
+              Profile updated.
+            </div>
           )}
-          <Input
-            id="name"
-            label="Name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            id="email"
-            label="Email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <Input id="name" label="Name" required value={name} onChange={(e) => setName(e.target.value)} />
+          <Input id="email" label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           <div className="flex justify-end">
             <Button type="submit" loading={profileLoading}>Save changes</Button>
           </div>
@@ -114,16 +105,20 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
       </section>
 
       {/* Password */}
-      <section className="rounded-xl border border-gray-100 bg-white shadow-card">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-sm font-medium text-gray-700">Change password</h2>
+      <section className="rounded-xl border border-white/[0.07] bg-gray-900 shadow-card">
+        <div className="px-5 py-4 border-b border-white/[0.06]">
+          <h2 className="text-sm font-semibold text-gray-200">Change password</h2>
         </div>
         <form onSubmit={changePassword} className="flex flex-col gap-4 p-5">
           {passwordError && (
-            <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{passwordError}</div>
+            <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">
+              {passwordError}
+            </div>
           )}
           {passwordSuccess && (
-            <div className="rounded-md bg-green-50 px-4 py-3 text-sm text-green-700">Password changed.</div>
+            <div className="rounded-lg border border-emerald-900/50 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-400">
+              Password changed.
+            </div>
           )}
           <Input
             id="currentPassword"
@@ -149,9 +144,9 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
       </section>
 
       {/* Danger zone */}
-      <section className="rounded-xl border border-red-100 bg-white shadow-card">
-        <div className="px-5 py-4 border-b border-red-100">
-          <h2 className="text-sm font-medium text-red-700">Danger zone</h2>
+      <section className="rounded-xl border border-red-900/30 bg-gray-900 shadow-card">
+        <div className="px-5 py-4 border-b border-red-900/20">
+          <h2 className="text-sm font-semibold text-red-400">Danger zone</h2>
         </div>
         <div className="p-5">
           <p className="text-sm text-gray-500 mb-4">
@@ -162,18 +157,15 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
               Delete account
             </Button>
           ) : (
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-red-600">Are you sure?</span>
-              <Button
-                variant="secondary"
-                onClick={() => setDeleteConfirm(false)}
-              >
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-sm text-red-400">Are you sure?</span>
+              <Button variant="secondary" onClick={() => setDeleteConfirm(false)}>
                 Cancel
               </Button>
               <button
                 onClick={deleteAccount}
                 disabled={deleteLoading}
-                className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 transition-colors disabled:opacity-50"
+                className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {deleteLoading ? "Deleting…" : "Yes, delete everything"}
               </button>

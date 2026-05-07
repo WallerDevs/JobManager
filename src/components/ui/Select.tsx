@@ -20,22 +20,22 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={cn(
-            "rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-900",
-            "focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent focus:bg-white",
+            "rounded-lg border border-gray-700/80 bg-gray-800/80 px-3.5 py-2.5 text-sm text-gray-100",
+            "focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/50 focus:bg-gray-800",
             "transition-all duration-150",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            error && "border-red-300 focus:ring-red-400",
+            error && "border-red-700/80 focus:ring-red-500/30",
             className
           )}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
+            <option key={opt.value} value={opt.value} className="bg-gray-800 text-gray-100">
               {opt.label}
             </option>
           ))}
         </select>
-        {error && <p className="text-xs text-red-500">{error}</p>}
+        {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
     );
   }

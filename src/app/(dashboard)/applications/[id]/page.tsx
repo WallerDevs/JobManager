@@ -41,9 +41,11 @@ export default async function ApplicationDetailPage({ params }: Props) {
   return (
     <DashboardShell title={`${application.companyName} — ${application.jobTitle}`}>
       <div className="mx-auto max-w-3xl flex flex-col gap-5">
+
+        {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">{application.jobTitle}</h2>
+            <h2 className="text-xl font-bold text-gray-100">{application.jobTitle}</h2>
             <p className="mt-0.5 text-sm text-gray-500">{application.companyName}</p>
           </div>
           <div className="flex items-center gap-3">
@@ -54,53 +56,63 @@ export default async function ApplicationDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <Card>
-          <CardContent className="p-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {application.location && (
-              <div>
-                <p className="text-xs text-gray-400">Location</p>
-                <p className="mt-0.5 text-sm text-gray-900">{application.location}</p>
-              </div>
-            )}
-            {application.salary && (
-              <div>
-                <p className="text-xs text-gray-400">Salary</p>
-                <p className="mt-0.5 text-sm text-gray-900">{application.salary}</p>
-              </div>
-            )}
-            {application.appliedAt && (
-              <div>
-                <p className="text-xs text-gray-400">Applied</p>
-                <p className="mt-0.5 text-sm text-gray-900">{formatDate(application.appliedAt)}</p>
-              </div>
-            )}
-            {application.jobUrl && (
-              <div className="col-span-2 sm:col-span-3">
-                <p className="text-xs text-gray-400">Job URL</p>
-                <a
-                  href={application.jobUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-0.5 block truncate text-sm text-brand-600 hover:underline"
-                >
-                  {application.jobUrl}
-                </a>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <StatusUpdater applicationId={application.id} currentStatus={application.status} />
-
-        {application.description && (
+        {/* Info grid */}
+        {(application.location || application.salary || application.appliedAt || application.jobUrl) && (
           <Card>
-            <CardContent className="p-5">
-              <h3 className="mb-2 text-sm font-medium text-gray-700">Description / Notes</h3>
-              <p className="whitespace-pre-wrap text-sm text-gray-600">{application.description}</p>
+            <CardContent className="p-5 grid grid-cols-2 gap-5 sm:grid-cols-3">
+              {application.location && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-600">Location</p>
+                  <p className="mt-1 text-sm text-gray-200">{application.location}</p>
+                </div>
+              )}
+              {application.salary && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-600">Salary</p>
+                  <p className="mt-1 text-sm text-gray-200">{application.salary}</p>
+                </div>
+              )}
+              {application.appliedAt && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-600">Applied</p>
+                  <p className="mt-1 text-sm text-gray-200">{formatDate(application.appliedAt)}</p>
+                </div>
+              )}
+              {application.jobUrl && (
+                <div className="col-span-2 sm:col-span-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-600">Job URL</p>
+                  <a
+                    href={application.jobUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 block truncate text-sm text-brand-400 hover:text-brand-300 transition-colors"
+                  >
+                    {application.jobUrl}
+                  </a>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
 
+        {/* Status pipeline */}
+        <StatusUpdater applicationId={application.id} currentStatus={application.status} />
+
+        {/* Description */}
+        {application.description && (
+          <Card>
+            <CardContent className="p-5">
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-600">
+                Notes
+              </h3>
+              <p className="whitespace-pre-wrap text-sm text-gray-300 leading-relaxed">
+                {application.description}
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Documents */}
         <DocumentAttacher
           applicationId={application.id}
           attachedDocs={application.documents}
