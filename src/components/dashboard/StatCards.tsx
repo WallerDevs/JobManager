@@ -6,28 +6,68 @@ import Link from "next/link";
 import { ApplicationStatus } from "@prisma/client";
 import { STATUS_LABELS } from "@/lib/utils";
 
-const STATUS_TOP: Record<ApplicationStatus, string> = {
+const STATUS_BORDER: Record<ApplicationStatus, string> = {
+  DRAFT:     "border-gray-500/20",
+  SENT:      "border-blue-500/20",
+  INTERVIEW: "border-amber-500/20",
+  REJECTED:  "border-red-500/20",
+  OFFER:     "border-emerald-500/25",
+};
+
+const STATUS_BG: Record<ApplicationStatus, string> = {
+  DRAFT:     "bg-gray-500/[0.06]",
+  SENT:      "bg-blue-500/[0.06]",
+  INTERVIEW: "bg-amber-500/[0.06]",
+  REJECTED:  "bg-red-500/[0.06]",
+  OFFER:     "bg-emerald-500/[0.07]",
+};
+
+const STATUS_LINE: Record<ApplicationStatus, string> = {
   DRAFT:     "from-gray-400 to-gray-500",
-  SENT:      "from-blue-400 to-blue-500",
+  SENT:      "from-blue-400 to-cyan-400",
   INTERVIEW: "from-amber-400 to-orange-400",
   REJECTED:  "from-red-400 to-rose-500",
-  OFFER:     "from-emerald-400 to-green-500",
+  OFFER:     "from-emerald-400 to-green-400",
 };
 
 const STATUS_GLOW: Record<ApplicationStatus, string> = {
-  DRAFT:     "group-hover:shadow-[0_0_24px_rgba(156,163,175,0.15)]",
-  SENT:      "group-hover:shadow-[0_0_24px_rgba(96,165,250,0.15)]",
-  INTERVIEW: "group-hover:shadow-[0_0_24px_rgba(251,191,36,0.15)]",
-  REJECTED:  "group-hover:shadow-[0_0_24px_rgba(248,113,113,0.15)]",
-  OFFER:     "group-hover:shadow-[0_0_24px_rgba(52,211,153,0.18)]",
+  DRAFT:     "group-hover:shadow-[0_0_40px_rgba(156,163,175,0.18)]",
+  SENT:      "group-hover:shadow-[0_0_40px_rgba(96,165,250,0.18)]",
+  INTERVIEW: "group-hover:shadow-[0_0_40px_rgba(251,191,36,0.18)]",
+  REJECTED:  "group-hover:shadow-[0_0_40px_rgba(248,113,113,0.18)]",
+  OFFER:     "group-hover:shadow-[0_0_40px_rgba(52,211,153,0.22)]",
+};
+
+const STATUS_NUMBER: Record<ApplicationStatus, string> = {
+  DRAFT:     "text-gray-100",
+  SENT:      "text-blue-100",
+  INTERVIEW: "text-amber-100",
+  REJECTED:  "text-red-100",
+  OFFER:     "text-emerald-100",
+};
+
+const STATUS_LABEL_COLOR: Record<ApplicationStatus, string> = {
+  DRAFT:     "text-gray-500",
+  SENT:      "text-blue-400/80",
+  INTERVIEW: "text-amber-400/80",
+  REJECTED:  "text-red-400/80",
+  OFFER:     "text-emerald-400/80",
 };
 
 const STATUS_ICON_BG: Record<ApplicationStatus, string> = {
-  DRAFT:     "bg-gray-500/10 text-gray-400",
-  SENT:      "bg-blue-500/10 text-blue-400",
-  INTERVIEW: "bg-amber-500/10 text-amber-400",
-  REJECTED:  "bg-red-500/10 text-red-400",
-  OFFER:     "bg-emerald-500/10 text-emerald-400",
+  DRAFT:     "bg-gray-500/[0.12] text-gray-400",
+  SENT:      "bg-blue-500/[0.12] text-blue-400",
+  INTERVIEW: "bg-amber-500/[0.12] text-amber-400",
+  REJECTED:  "bg-red-500/[0.12] text-red-400",
+  OFFER:     "bg-emerald-500/[0.12] text-emerald-400",
+};
+
+const STATUS_FILL_HOVER: Record<ApplicationStatus, string> = {
+  DRAFT:     "from-gray-500/[0.08] to-transparent",
+  SENT:      "from-blue-500/[0.08] to-transparent",
+  INTERVIEW: "from-amber-500/[0.08] to-transparent",
+  REJECTED:  "from-red-500/[0.08] to-transparent",
+  OFFER:     "from-emerald-500/[0.09] to-transparent",
 };
 
 const STATUS_ICONS: Record<ApplicationStatus, React.ReactNode> = {
@@ -67,14 +107,14 @@ function AnimatedCount({ value }: { value: number }) {
 
 const containerVariants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.12 } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.96 },
+  hidden: { opacity: 0, y: 24, scale: 0.94 },
   show: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   },
 };
 
@@ -84,6 +124,8 @@ interface StatCardsProps {
 }
 
 export function StatCards({ counts, statuses }: StatCardsProps) {
+  const total = Object.values(counts).reduce((sum, v) => sum + (v ?? 0), 0);
+
   return (
     <motion.div
       className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
@@ -93,29 +135,40 @@ export function StatCards({ counts, statuses }: StatCardsProps) {
     >
       {statuses.map((status) => {
         const count = counts[status] ?? 0;
+        const fillPct = total > 0 ? Math.round((count / total) * 100) : 0;
         return (
-          <motion.div key={status} variants={cardVariants}>
+          <motion.div key={status} variants={cardVariants} whileHover={{ y: -4, scale: 1.02 }} transition={{ type: "spring", stiffness: 400, damping: 28 }}>
             <Link href={`/applications?status=${status}`}>
-              <div
-                className={`group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] p-4 backdrop-blur-sm transition-all duration-200 hover:border-white/[0.13] hover:bg-white/[0.05] cursor-pointer ${STATUS_GLOW[status]}`}
-              >
+              <div className={`group relative overflow-hidden rounded-2xl border backdrop-blur-sm cursor-pointer transition-all duration-300 ${STATUS_BORDER[status]} ${STATUS_BG[status]} ${STATUS_GLOW[status]}`}>
                 {/* Top gradient line */}
-                <div className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${STATUS_TOP[status]}`} />
-                {/* Top-edge internal glow */}
-                <div className={`absolute inset-x-0 top-0 h-12 bg-gradient-to-b ${STATUS_TOP[status]} opacity-0 transition-opacity duration-300 group-hover:opacity-[0.06] [mask-image:linear-gradient(to_bottom,white,transparent)]`} />
+                <div className={`absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r ${STATUS_LINE[status]}`} />
+                {/* Hover fill sweep */}
+                <div className={`absolute inset-0 bg-gradient-to-b ${STATUS_FILL_HOVER[status]} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
 
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-600">
-                      {STATUS_LABELS[status]}
-                    </p>
-                    <p className="mt-2 text-3xl font-bold tabular-nums text-white">
-                      <AnimatedCount value={count} />
-                    </p>
+                <div className="relative p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-transform duration-200 group-hover:scale-110 ${STATUS_ICON_BG[status]}`}>
+                      {STATUS_ICONS[status]}
+                    </div>
                   </div>
-                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-110 ${STATUS_ICON_BG[status]}`}>
-                    {STATUS_ICONS[status]}
+
+                  <p className={`text-4xl font-black tabular-nums leading-none ${STATUS_NUMBER[status]}`}>
+                    <AnimatedCount value={count} />
+                  </p>
+                  <p className={`mt-2 text-[10px] font-semibold uppercase tracking-widest ${STATUS_LABEL_COLOR[status]}`}>
+                    {STATUS_LABELS[status]}
+                  </p>
+
+                  {/* Progress bar */}
+                  <div className="mt-4 h-[3px] w-full overflow-hidden rounded-full bg-white/[0.06]">
+                    <motion.div
+                      className={`h-full bg-gradient-to-r ${STATUS_LINE[status]}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${fillPct}%` }}
+                      transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    />
                   </div>
+                  <p className="mt-1.5 text-[10px] text-gray-700 tabular-nums">{fillPct}% of total</p>
                 </div>
               </div>
             </Link>
