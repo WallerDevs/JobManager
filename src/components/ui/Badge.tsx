@@ -6,11 +6,11 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantClasses = {
-  default: "bg-gray-800 text-gray-300 ring-gray-700/80",
-  success: "bg-emerald-950/80 text-emerald-400 ring-emerald-900/80",
-  warning: "bg-amber-950/80 text-amber-400 ring-amber-900/80",
-  danger: "bg-red-950/80 text-red-400 ring-red-900/80",
-  info: "bg-blue-950/80 text-blue-400 ring-blue-900/80",
+  default: "bg-white/[0.06] text-gray-300 ring-white/[0.1]",
+  success: "bg-emerald-500/[0.12] text-emerald-400 ring-emerald-500/[0.2]",
+  warning: "bg-amber-500/[0.12] text-amber-400 ring-amber-500/[0.2]",
+  danger:  "bg-red-500/[0.12] text-red-400 ring-red-500/[0.2]",
+  info:    "bg-blue-500/[0.12] text-blue-400 ring-blue-500/[0.2]",
 };
 
 export function Badge({ className, variant = "default", children, ...props }: BadgeProps) {

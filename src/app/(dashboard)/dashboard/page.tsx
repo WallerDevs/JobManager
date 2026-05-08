@@ -48,14 +48,24 @@ export default async function DashboardPage() {
 
         {/* Welcome banner */}
         <div className="animate-slide-up">
-          <h2 className="text-xl font-bold text-gray-100">
-            {greeting}
-          </h2>
-          <p className="mt-0.5 text-sm text-gray-500">
-            {total === 0
-              ? "Start tracking your applications below."
-              : `${total} application${total !== 1 ? "s" : ""} in your pipeline.`}
-          </p>
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-white">{greeting}</h2>
+              <p className="mt-1 text-sm text-gray-500">
+                {total === 0
+                  ? "Start tracking your applications below."
+                  : `You have ${total} application${total !== 1 ? "s" : ""} in your pipeline.`}
+              </p>
+            </div>
+            <Link href="/applications/new">
+              <Button size="sm">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                New application
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Animated stat cards with number counters */}

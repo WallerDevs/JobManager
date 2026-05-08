@@ -5,11 +5,12 @@ export function Card({ className, children, ...props }: HTMLAttributes<HTMLDivEl
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/[0.07] bg-gray-900 shadow-card",
+        "relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] shadow-[0_1px_1px_rgba(0,0,0,0.5),0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-sm",
         className
       )}
       {...props}
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       {children}
     </div>
   );

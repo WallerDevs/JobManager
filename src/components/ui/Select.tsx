@@ -12,7 +12,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={id} className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+          <label htmlFor={id} className="text-xs font-semibold uppercase tracking-wider text-gray-500">
             {label}
           </label>
         )}
@@ -20,17 +20,17 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={cn(
-            "rounded-lg border border-gray-700/80 bg-gray-800/80 px-3.5 py-2.5 text-sm text-gray-100",
-            "focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/50 focus:bg-gray-800",
-            "transition-all duration-150",
+            "rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 text-sm text-gray-100",
+            "backdrop-blur-sm transition-all duration-150",
+            "focus:border-emerald-500/40 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-emerald-500/30",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            error && "border-red-700/80 focus:ring-red-500/30",
+            error && "border-red-500/40 focus:ring-red-500/30",
             className
           )}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-gray-800 text-gray-100">
+            <option key={opt.value} value={opt.value} className="bg-[#060e08] text-gray-100">
               {opt.label}
             </option>
           ))}
