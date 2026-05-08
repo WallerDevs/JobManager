@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -48,21 +49,19 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-56 flex-col bg-gray-950">
-      <div className="flex h-14 items-center px-5 border-b border-white/5">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-violet-600 shadow-lg">
-            <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <span className="text-sm font-semibold text-white">JobManager</span>
+    <aside className="flex h-full w-56 shrink-0 flex-col border-r border-white/[0.05] bg-[#060d08]">
+      {/* Logo */}
+      <div className="flex h-14 items-center px-5 border-b border-white/[0.05]">
+        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+          <img src="/logo.png" width={28} height={28} alt="JobManager" className="rounded-lg shrink-0" />
+          <span className="text-sm font-semibold text-white tracking-tight">JobManager</span>
         </Link>
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-2 py-3">
-        <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-widest text-gray-600">
-          Menu
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto px-2.5 py-4">
+        <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-widest text-gray-600">
+          Navigation
         </p>
         <ul className="flex flex-col gap-0.5">
           {navItems.map((item) => {
@@ -72,16 +71,28 @@ export function Sidebar() {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-1.5 text-sm transition-all duration-150",
-                    active
-                      ? "bg-white/10 text-white font-medium"
-                      : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                    "relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors duration-150",
+                    active ? "text-white font-medium" : "text-gray-500 hover:bg-white/[0.04] hover:text-gray-200"
                   )}
                 >
-                  {item.icon}
-                  {item.label}
+                  {/* Sliding active background */}
                   {active && (
-                    <span className="ml-auto h-1.5 w-1.5 rounded-full bg-gradient-to-r from-brand-400 to-violet-400" />
+                    <motion.div
+                      layoutId="sidebarActive"
+                      className="absolute inset-0 rounded-lg bg-brand-600/15"
+                      transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                    />
+                  )}
+
+                  <span className={cn(
+                    "relative z-10 transition-colors duration-150",
+                    active ? "text-brand-400" : "text-gray-600"
+                  )}>
+                    {item.icon}
+                  </span>
+                  <span className="relative z-10">{item.label}</span>
+                  {active && (
+                    <span className="relative z-10 ml-auto h-1.5 w-1.5 rounded-full bg-brand-400" />
                   )}
                 </Link>
               </li>
@@ -90,12 +101,6 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      <div className="border-t border-white/5 p-3">
-        <div className="rounded-lg bg-gradient-to-r from-brand-600/20 to-violet-600/20 px-3 py-2.5 border border-white/5">
-          <p className="text-xs font-medium text-gray-300">MVP</p>
-          <p className="text-[10px] text-gray-500 mt-0.5">Job search tracker</p>
-        </div>
-      </div>
     </aside>
   );
 }

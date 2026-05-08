@@ -10,6 +10,7 @@ import {
 } from "framer-motion";
 import { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { HeroBackground } from "@/components/marketing/HeroBackground";
 
 const spring = { type: "spring" as const, stiffness: 80, damping: 20 };
 const easeOut: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -37,7 +38,7 @@ function ScrollProgressBar() {
   if (!mounted) return null;
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 origin-left z-[60]"
+      className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 origin-left z-[60]"
       style={{ scaleX }}
     />
   );
@@ -50,7 +51,7 @@ function Navbar() {
   const { scrollY } = useScroll();
   const rawBg = useTransform(scrollY, [0, 60], [0.5, 0.88]);
   const rawBorder = useTransform(scrollY, [0, 60], [0, 0.08]);
-  const bgColor = useTransform(rawBg, (v) => `rgba(6,8,16,${v})`);
+  const bgColor = useTransform(rawBg, (v) => `rgba(3,10,6,${v})`);
   const borderColor = useTransform(rawBorder, (v) => `rgba(255,255,255,${v})`);
 
   return (
@@ -61,15 +62,15 @@ function Navbar() {
       style={{ backgroundColor: bgColor, borderBottom: "1px solid", borderColor }}
     >
       <Link href="/" className="flex items-center gap-2.5">
-        <motion.div
+        <motion.img
+          src="/logo.png"
+          width={28}
+          height={28}
+          alt="JobManager"
           whileHover={{ scale: 1.1, rotate: 6 }}
           transition={spring}
-          className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/30"
-        >
-          <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </motion.div>
+          className="rounded-lg shrink-0 shadow-lg shadow-lime-500/20"
+        />
         <span className="text-sm font-semibold text-white">JobManager</span>
       </Link>
 
@@ -140,7 +141,7 @@ function AppPreview() {
         {/* Sidebar */}
         <div className="w-36 sm:w-44 bg-gray-950 border-r border-white/5 flex flex-col p-2.5 gap-0.5 flex-shrink-0">
           <div className="flex items-center gap-2 px-2 py-2 mb-1">
-            <div className="h-5 w-5 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 flex-shrink-0" />
+            <img src="/logo.png" width={20} height={20} alt="JobManager" className="rounded-md flex-shrink-0" />
             <span className="text-xs font-semibold text-white hidden sm:block">JobManager</span>
           </div>
           {["Dashboard", "Applications", "Documents"].map((item, i) => (
@@ -151,7 +152,7 @@ function AppPreview() {
               transition={{ delay: 0.6 + i * 0.1, duration: 0.4, ease: easeOut }}
               className={`px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-2 ${i === 0 ? "bg-white/10 text-white font-medium" : "text-gray-500"}`}
             >
-              <div className={`h-3.5 w-3.5 rounded flex-shrink-0 ${i === 0 ? "bg-indigo-400" : "bg-gray-700"}`} />
+              <div className={`h-3.5 w-3.5 rounded flex-shrink-0 ${i === 0 ? "bg-emerald-400" : "bg-gray-700"}`} />
               <span className="hidden sm:block">{item}</span>
             </motion.div>
           ))}
@@ -207,22 +208,13 @@ function Hero() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  const blob1Y = useSpring(useTransform(scrollYProgress, [0, 1], [0, 140]), { stiffness: 50, damping: 18 });
-  const blob2Y = useSpring(useTransform(scrollYProgress, [0, 1], [0, 80]), { stiffness: 40, damping: 18 });
-  const blob3Y = useSpring(useTransform(scrollYProgress, [0, 1], [0, 60]), { stiffness: 35, damping: 18 });
   const contentY = useSpring(useTransform(scrollYProgress, [0, 1], [0, 40]), { stiffness: 60, damping: 20 });
   const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
 
   return (
     <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-0 text-center overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <motion.div style={{ y: blob1Y }} className="animate-blob absolute -top-40 -left-20 h-[600px] w-[600px] rounded-full bg-indigo-700/25 blur-3xl" />
-        <motion.div style={{ y: blob2Y }} className="animate-blob animation-delay-2 absolute top-10 -right-20 h-[500px] w-[500px] rounded-full bg-violet-700/20 blur-3xl" />
-        <motion.div style={{ y: blob3Y }} className="animate-blob animation-delay-4 absolute -bottom-20 left-1/3 h-[400px] w-[400px] rounded-full bg-purple-700/15 blur-3xl" />
-      </div>
-
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.12]"
+        className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
@@ -232,7 +224,16 @@ function Hero() {
       <motion.div style={{ y: contentY, opacity: contentOpacity }} className="relative z-10 max-w-5xl mx-auto w-full">
         <motion.div variants={stagger} initial="hidden" animate="visible">
 
-          <motion.div variants={fadeUp} className="flex justify-center mb-8">
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-4 mb-8">
+            <motion.img
+              src="/logo.png"
+              width={72}
+              height={72}
+              alt="JobManager"
+              whileHover={{ scale: 1.08, rotate: 4 }}
+              transition={spring}
+              className="rounded-2xl shadow-2xl shadow-lime-500/20"
+            />
             <motion.div
               whileHover={{ scale: 1.05, y: -1 }}
               transition={spring}
@@ -253,7 +254,7 @@ function Hero() {
             <motion.span
               animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
               transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-              className="inline-block bg-gradient-to-r from-indigo-400 via-violet-300 to-purple-400 bg-clip-text text-transparent pt-3 pb-5"
+              className="inline-block bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent pt-3 pb-5"
               style={{ backgroundSize: "200% auto" }}
             >
               finally organized.
@@ -268,7 +269,7 @@ function Hero() {
             <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }} transition={spring}>
               <Link
                 href="/register"
-                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:from-indigo-500 hover:to-violet-500 transition-shadow duration-300"
+                className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:from-emerald-500 hover:to-green-500 transition-shadow duration-300"
               >
                 Get started for free
                 <motion.svg
@@ -451,13 +452,13 @@ function FeatureCard({ f, i, inView }: { f: typeof features[0]; i: number; inVie
       <div
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: "radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99,102,241,0.09), transparent 65%)",
+          background: "radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16,185,129,0.09), transparent 65%)",
         }}
       />
       <motion.div
         whileHover={{ scale: 1.12, rotate: 6 }}
         transition={spring}
-        className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-500/20 transition-colors duration-300"
+        className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 transition-colors duration-300"
       >
         {f.icon}
       </motion.div>
@@ -472,7 +473,7 @@ function Features() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="relative py-32 px-6 bg-[#060810]">
+    <section className="relative py-32 px-6">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -489,7 +490,7 @@ function Features() {
             initial={{ opacity: 0, y: 8 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.05, ease: easeOut }}
-            className="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-400 mb-3"
+            className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-400 mb-3"
           >
             Features
           </motion.p>
@@ -561,7 +562,7 @@ function HowItWorks() {
   return (
     <section className="relative py-32 px-6 overflow-hidden">
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="h-[600px] w-[600px] rounded-full bg-indigo-900/10 blur-3xl" />
+        <div className="h-[600px] w-[600px] rounded-full bg-emerald-900/10 blur-3xl" />
       </div>
 
       <div ref={ref} className="max-w-5xl mx-auto relative">
@@ -571,14 +572,14 @@ function HowItWorks() {
           transition={{ duration: 0.65, ease: easeOut }}
           className="text-center mb-16"
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-violet-400 mb-3">How it works</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-green-400 mb-3">How it works</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white">Up and running in minutes</h2>
           <p className="mt-4 text-gray-400 max-w-xl mx-auto">No steep learning curve. Just a clear, simple flow.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative">
           {/* Connector line — aligns with icon centers (24px padding + 32px = 56px) */}
-          <div className="hidden sm:block absolute top-[56px] left-[calc(33%+32px)] right-[calc(33%+32px)] h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/40 to-indigo-500/0" />
+          <div className="hidden sm:block absolute top-[56px] left-[calc(33%+32px)] right-[calc(33%+32px)] h-px bg-gradient-to-r from-emerald-500/0 via-emerald-500/40 to-emerald-500/0" />
 
           {steps.map((step, i) => (
             <motion.div
@@ -595,10 +596,10 @@ function HowItWorks() {
                 transition={{ type: "spring", stiffness: 200, damping: 18, delay: i * 0.15 + 0.2 }}
                 className="relative mb-5"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#060810] bg-gradient-to-br from-indigo-600/30 to-violet-600/30 border border-white/10 text-indigo-400">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#060810] bg-gradient-to-br from-emerald-600/30 to-green-600/30 border border-white/10 text-emerald-400">
                   {step.icon}
                 </div>
-                <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-[9px] font-bold text-white shadow-lg shadow-indigo-500/40">
+                <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-[9px] font-bold text-white shadow-lg shadow-emerald-500/40">
                   {i + 1}
                 </div>
               </motion.div>
@@ -631,12 +632,12 @@ function CTA() {
           <motion.div
             animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.06, 1] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 rounded-3xl bg-gradient-to-r from-indigo-600/25 to-violet-600/25 blur-2xl"
+            className="absolute inset-0 rounded-3xl bg-gradient-to-r from-emerald-600/25 to-green-600/25 blur-2xl"
           />
           <motion.div
             animate={{ opacity: [0.2, 0.5, 0.2], scale: [1.05, 1, 1.05] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute inset-2 rounded-3xl bg-gradient-to-br from-violet-600/15 to-indigo-600/15 blur-xl"
+            className="absolute inset-2 rounded-3xl bg-gradient-to-br from-green-600/15 to-emerald-600/15 blur-xl"
           />
 
           <div className="relative rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm px-10 py-16 overflow-hidden">
@@ -674,7 +675,7 @@ function CTA() {
             >
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-9 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:from-indigo-500 hover:to-violet-500 transition-shadow duration-300"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-9 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:from-emerald-500 hover:to-green-500 transition-shadow duration-300"
               >
                 Get started for free
                 <motion.svg
@@ -708,11 +709,7 @@ function Footer() {
     >
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <motion.div whileHover={{ x: -2 }} transition={spring} className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-violet-600">
-            <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
+          <img src="/logo.png" width={24} height={24} alt="JobManager" className="rounded-md shrink-0" />
           <span className="text-sm font-semibold text-gray-400">JobManager</span>
         </motion.div>
         <p className="text-xs text-gray-600">© 2026 JobManager. All rights reserved.</p>
@@ -726,15 +723,18 @@ function Footer() {
 // ---------------------------------------------------------------------------
 export function Landing() {
   return (
-    <div className="min-h-screen bg-[#060810] text-white">
-      <ScrollProgressBar />
-      <Navbar />
-      <Hero />
-      <StatsRow />
-      <Features />
-      <HowItWorks />
-      <CTA />
-      <Footer />
+    <div className="min-h-screen text-white">
+      <HeroBackground />
+      <div className="relative z-[2]">
+        <ScrollProgressBar />
+        <Navbar />
+        <Hero />
+        <StatsRow />
+        <Features />
+        <HowItWorks />
+        <CTA />
+        <Footer />
+      </div>
     </div>
   );
 }

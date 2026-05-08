@@ -47,11 +47,7 @@ function LoginForm() {
 
       <div className="relative w-full max-w-sm animate-fade-in">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 shadow-lg shadow-brand-500/30">
-            <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-          </div>
+          <img src="/logo.png" width={48} height={48} alt="JobManager" className="mx-auto mb-5 rounded-2xl shadow-lg shadow-lime-500/20" />
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
           <p className="mt-1.5 text-sm text-gray-400">Sign in to your JobManager account</p>
         </div>

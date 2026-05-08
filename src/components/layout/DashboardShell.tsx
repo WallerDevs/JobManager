@@ -1,5 +1,6 @@
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { ShellContent } from "@/components/layout/ShellContent";
 
 interface DashboardShellProps {
   title: string;
@@ -8,11 +9,11 @@ interface DashboardShellProps {
 
 export function DashboardShell({ title, children }: DashboardShellProps) {
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-[#050d07]">
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header title={title} />
-        <main className="flex-1 overflow-y-auto p-4 animate-fade-in">{children}</main>
+        <ShellContent>{children}</ShellContent>
       </div>
     </div>
   );

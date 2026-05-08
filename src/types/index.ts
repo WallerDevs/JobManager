@@ -12,6 +12,10 @@ export type ApplicationSummary = Pick<
 
 export type DocumentSummary = Pick<Document, "id" | "type" | "title" | "updatedAt">;
 
+export type SerializedDocumentSummary = Omit<DocumentSummary, "updatedAt"> & {
+  updatedAt: string;
+};
+
 // Serialized variants — dates as ISO strings, safe to pass across the server→client boundary
 export type SerializedApplicationSummary = Omit<ApplicationSummary, "appliedAt" | "createdAt"> & {
   appliedAt: string | null;

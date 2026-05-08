@@ -64,7 +64,7 @@ export function ApplicationForm({ initialValues, applicationId }: ApplicationFor
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       {error && (
-        <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">{error}</div>
       )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
