@@ -1,12 +1,26 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 
-const jakarta = Plus_Jakarta_Sans({
+const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-jakarta",
+  variable: "--font-display",
+  style: ["normal", "italic"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -16,8 +30,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={jakarta.variable}>
-      <body className={`antialiased ${jakarta.className}`}>
+    <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${dmMono.variable}`}>
+      <body className={`antialiased ${dmSans.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

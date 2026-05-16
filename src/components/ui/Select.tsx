@@ -12,7 +12,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={id} className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+          <label htmlFor={id} className="font-mono text-[10px] font-medium uppercase tracking-wider text-gray-500">
             {label}
           </label>
         )}
@@ -20,11 +20,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={cn(
-            "rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 text-sm text-gray-100",
-            "backdrop-blur-sm transition-all duration-150",
-            "focus:border-emerald-500/40 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-emerald-500/30",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            error && "border-red-500/40 focus:ring-red-500/30",
+            "rounded-lg border border-white/[0.07] bg-white/[0.03] px-3.5 py-2.5 text-sm text-gray-100",
+            "transition-all duration-150",
+            "focus:border-emerald-500/40 focus:bg-white/[0.05] focus:outline-none focus:ring-1 focus:ring-emerald-500/25",
+            "disabled:cursor-not-allowed disabled:opacity-40",
+            error && "border-red-500/40 focus:ring-red-500/25",
             className
           )}
           {...props}
@@ -35,7 +35,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        {error && <p className="text-xs text-red-400">{error}</p>}
+        {error && <p className="font-mono text-[10px] text-red-400">{error}</p>}
       </div>
     );
   }

@@ -2,12 +2,71 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
 interface Props {
   initialName: string;
   initialEmail: string;
+}
+
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+};
+
+function SectionCard({
+  title,
+  danger,
+  children,
+}: {
+  title: string;
+  danger?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.section
+      variants={item}
+      className={`relative overflow-hidden rounded-xl border bg-white/[0.025] shadow-[0_1px_2px_rgba(0,0,0,0.4),0_6px_24px_rgba(0,0,0,0.25)] ${
+        danger ? "border-red-500/20" : "border-white/[0.07]"
+      }`}
+    >
+      <div
+        className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          danger ? "via-red-500/30" : "via-white/[0.07]"
+        }`}
+      />
+      <div className={`border-b px-5 py-4 ${danger ? "border-red-500/15" : "border-white/[0.06]"}`}>
+        <h2
+          className={`font-mono text-[10px] font-medium uppercase tracking-wider ${
+            danger ? "text-red-400/80" : "text-gray-500"
+          }`}
+        >
+          {title}
+        </h2>
+      </div>
+      {children}
+    </motion.section>
+  );
+}
+
+function Notice({ kind, children }: { kind: "error" | "success"; children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`rounded-lg border px-4 py-3 text-sm ${
+        kind === "error"
+          ? "border-red-500/20 bg-red-950/30 text-red-400"
+          : "border-emerald-500/20 bg-emerald-950/30 text-emerald-400"
+      }`}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
 export function SettingsForm({ initialName, initialEmail }: Props) {
@@ -79,47 +138,44 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-xl flex flex-col gap-5">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
+      }}
+      className="mx-auto flex max-w-2xl flex-col gap-5"
+    >
+      {/* Page header */}
+      <motion.div variants={item} className="border-b border-white/[0.05] pb-5">
+        <p className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-emerald-500/60">
+          Account
+        </p>
+        <h1 className="mt-2 font-display text-3xl font-semibold italic tracking-tight text-white">
+          Settings
+        </h1>
+        <p className="mt-1.5 text-sm text-gray-500">Manage your profile, password, and account.</p>
+      </motion.div>
+
       {/* Profile */}
-      <section className="rounded-xl border border-white/[0.07] bg-gray-900 shadow-card">
-        <div className="px-5 py-4 border-b border-white/[0.06]">
-          <h2 className="text-sm font-semibold text-gray-200">Profile</h2>
-        </div>
+      <SectionCard title="Profile">
         <form onSubmit={saveProfile} className="flex flex-col gap-4 p-5">
-          {profileError && (
-            <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">
-              {profileError}
-            </div>
-          )}
-          {profileSuccess && (
-            <div className="rounded-lg border border-emerald-900/50 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-400">
-              Profile updated.
-            </div>
-          )}
+          {profileError && <Notice kind="error">{profileError}</Notice>}
+          {profileSuccess && <Notice kind="success">Profile updated.</Notice>}
           <Input id="name" label="Name" required value={name} onChange={(e) => setName(e.target.value)} />
           <Input id="email" label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-1">
             <Button type="submit" loading={profileLoading}>Save changes</Button>
           </div>
         </form>
-      </section>
+      </SectionCard>
 
       {/* Password */}
-      <section className="rounded-xl border border-white/[0.07] bg-gray-900 shadow-card">
-        <div className="px-5 py-4 border-b border-white/[0.06]">
-          <h2 className="text-sm font-semibold text-gray-200">Change password</h2>
-        </div>
+      <SectionCard title="Change password">
         <form onSubmit={changePassword} className="flex flex-col gap-4 p-5">
-          {passwordError && (
-            <div className="rounded-lg border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400">
-              {passwordError}
-            </div>
-          )}
-          {passwordSuccess && (
-            <div className="rounded-lg border border-emerald-900/50 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-400">
-              Password changed.
-            </div>
-          )}
+          {passwordError && <Notice kind="error">{passwordError}</Notice>}
+          {passwordSuccess && <Notice kind="success">Password changed.</Notice>}
           <Input
             id="currentPassword"
             label="Current password"
@@ -137,19 +193,16 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="At least 8 characters"
           />
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-1">
             <Button type="submit" loading={passwordLoading}>Change password</Button>
           </div>
         </form>
-      </section>
+      </SectionCard>
 
       {/* Danger zone */}
-      <section className="rounded-xl border border-red-900/30 bg-gray-900 shadow-card">
-        <div className="px-5 py-4 border-b border-red-900/20">
-          <h2 className="text-sm font-semibold text-red-400">Danger zone</h2>
-        </div>
+      <SectionCard title="Danger zone" danger>
         <div className="p-5">
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="mb-4 text-sm text-gray-500">
             Permanently delete your account and all associated data. This cannot be undone.
           </p>
           {!deleteConfirm ? (
@@ -157,22 +210,18 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
               Delete account
             </Button>
           ) : (
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex flex-wrap items-center gap-3">
               <span className="text-sm text-red-400">Are you sure?</span>
               <Button variant="secondary" onClick={() => setDeleteConfirm(false)}>
                 Cancel
               </Button>
-              <button
-                onClick={deleteAccount}
-                disabled={deleteLoading}
-                className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-500 transition-colors disabled:opacity-50 cursor-pointer"
-              >
-                {deleteLoading ? "Deleting…" : "Yes, delete everything"}
-              </button>
+              <Button variant="danger" onClick={deleteAccount} loading={deleteLoading}>
+                Yes, delete everything
+              </Button>
             </div>
           )}
         </div>
-      </section>
-    </div>
+      </SectionCard>
+    </motion.div>
   );
 }

@@ -4,8 +4,11 @@ import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 function LoginForm() {
   const router = useRouter();
@@ -38,25 +41,63 @@ function LoginForm() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-950 px-4">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-brand-600/20 blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-violet-600/20 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-brand-500/10 blur-3xl" />
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#030a06] px-4">
+      {/* Ambient brand glows */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-[-15%] left-[10%] h-[560px] w-[560px] rounded-full bg-emerald-500/[0.06] blur-[150px]" />
+        <div className="absolute bottom-[-15%] right-[-5%] h-[480px] w-[480px] rounded-full bg-teal-400/[0.04] blur-[140px]" />
       </div>
+      {/* Dot-grid texture */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-      <div className="relative w-full max-w-sm animate-fade-in">
-        <div className="mb-8 text-center">
-          <img src="/logo.png" width={48} height={48} alt="JobManager" className="mx-auto mb-5 rounded-2xl shadow-lg shadow-lime-500/20" />
-          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="mt-1.5 text-sm text-gray-400">Sign in to your JobManager account</p>
-        </div>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+        }}
+        className="relative w-full max-w-sm"
+      >
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 16 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
+          }}
+          className="mb-9 text-center"
+        >
+          <div className="mx-auto mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.04] ring-1 ring-emerald-500/20">
+            <img src="/logo.png" width={36} height={36} alt="JobManager" className="rounded-xl" />
+          </div>
+          <h1 className="font-display text-3xl font-semibold italic tracking-tight text-white">
+            Welcome back
+          </h1>
+          <p className="mt-2 text-sm text-gray-500">Sign in to your JobManager account</p>
+        </motion.div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 shadow-2xl">
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+          }}
+          className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.025] p-6 backdrop-blur-sm shadow-[0_1px_2px_rgba(0,0,0,0.4),0_12px_40px_rgba(0,0,0,0.35)]"
+        >
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+
           {error && (
-            <div className="mb-4 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 rounded-lg border border-red-500/20 bg-red-950/30 px-4 py-3 text-sm text-red-400"
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -68,7 +109,6 @@ function LoginForm() {
               required
               placeholder="you@example.com"
               autoComplete="email"
-              className="bg-white/10 border-white/10 text-white placeholder:text-gray-500 focus:bg-white/15"
             />
             <Input
               id="password"
@@ -78,21 +118,26 @@ function LoginForm() {
               required
               placeholder="••••••••"
               autoComplete="current-password"
-              className="bg-white/10 border-white/10 text-white placeholder:text-gray-500 focus:bg-white/15"
             />
-            <Button type="submit" loading={loading} className="w-full mt-1" size="lg">
+            <Button type="submit" loading={loading} className="mt-1 w-full" size="lg">
               Sign in
             </Button>
           </form>
-        </div>
+        </motion.div>
 
-        <p className="mt-5 text-center text-sm text-gray-500">
+        <motion.p
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.5, ease } },
+          }}
+          className="mt-6 text-center text-sm text-gray-600"
+        >
           {"Don't have an account? "}
-          <Link href="/register" className="font-medium text-brand-400 hover:text-brand-300 transition-colors">
+          <Link href="/register" className="font-medium text-emerald-400 transition-colors hover:text-emerald-300">
             Create one
           </Link>
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     </div>
   );
 }
@@ -101,8 +146,8 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-gray-950 px-4 text-sm text-gray-400">
-          Loading...
+        <div className="flex min-h-screen items-center justify-center bg-[#030a06] px-4 text-sm text-gray-500">
+          Loading…
         </div>
       }
     >

@@ -85,14 +85,14 @@ export function DocumentCard({ document }: DocumentCardProps) {
         onMouseLeave={handleMouseLeave}
         whileHover={{ y: -3 }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-sm cursor-pointer transition-colors duration-200 hover:border-white/[0.12] hover:bg-white/[0.05]"
+        className="group relative overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.025] cursor-pointer transition-colors duration-200 hover:border-white/[0.11] hover:bg-white/[0.04]"
       >
         {/* Type top bar */}
         <div className={`absolute inset-x-0 top-0 h-[2px] ${TYPE_TOP[type]}`} />
 
         {/* Mouse-tracking spotlight */}
         <div
-          className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300"
+          className="pointer-events-none absolute inset-0 rounded-xl transition-opacity duration-300"
           style={{
             opacity: spotlight.visible ? 1 : 0,
             background: `radial-gradient(240px circle at ${spotlight.x}px ${spotlight.y}px, ${TYPE_SPOTLIGHT[type]}, transparent 70%)`,
@@ -102,14 +102,14 @@ export function DocumentCard({ document }: DocumentCardProps) {
         <div className="relative px-4 pt-5 pb-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-center gap-3">
-              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${TYPE_ICON_BG[type]}`}>
+              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${TYPE_ICON_BG[type]}`}>
                 {TYPE_ICON[type]}
               </div>
               <div className="min-w-0 flex-1">
                 <p className={`truncate text-sm font-semibold text-gray-100 transition-colors duration-150 ${TYPE_HOVER_TEXT[type]}`}>
                   {document.title}
                 </p>
-                <p className="mt-0.5 text-[11px] text-gray-600">{TYPE_LABEL[type]}</p>
+                <p className="mt-0.5 font-mono text-[10px] text-gray-600">{TYPE_LABEL[type]}</p>
               </div>
             </div>
             <button
@@ -124,7 +124,7 @@ export function DocumentCard({ document }: DocumentCardProps) {
             </button>
           </div>
 
-          <p className="mt-3 text-[11px] text-gray-600">Updated {formatDate(document.updatedAt)}</p>
+          <p className="mt-3 font-mono text-[10px] text-gray-700">Updated {formatDate(document.updatedAt)}</p>
         </div>
       </motion.div>
     </Link>

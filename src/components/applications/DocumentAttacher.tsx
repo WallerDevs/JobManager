@@ -59,15 +59,16 @@ export function DocumentAttacher({ applicationId, attachedDocs, allDocs }: Props
   }
 
   return (
-    <div className="rounded-xl border border-white/[0.07] bg-gray-900 shadow-card">
+    <div className="relative overflow-hidden rounded-xl border border-white/[0.07] bg-white/[0.025] shadow-[0_1px_2px_rgba(0,0,0,0.4),0_6px_24px_rgba(0,0,0,0.25)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
       <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06]">
-        <h3 className="text-sm font-medium text-gray-300">Documents</h3>
+        <h3 className="font-mono text-[10px] font-medium uppercase tracking-wider text-gray-500">Documents</h3>
         {available.length > 0 && (
           <div className="relative">
             <button
               onClick={() => setOpen((o) => !o)}
               disabled={busy}
-              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-brand-400 hover:bg-brand-500/10 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition-colors cursor-pointer"
             >
               <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -78,7 +79,7 @@ export function DocumentAttacher({ applicationId, attachedDocs, allDocs }: Props
             {open && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                <div className="absolute right-0 top-8 z-20 w-60 rounded-xl border border-white/[0.08] bg-gray-800 shadow-card-hover py-1">
+                <div className="absolute right-0 top-8 z-20 w-60 rounded-xl border border-white/[0.08] bg-[#0a140d] shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-md py-1">
                   {available.map((doc) => (
                     <button
                       key={doc.id}
@@ -115,7 +116,7 @@ export function DocumentAttacher({ applicationId, attachedDocs, allDocs }: Props
                   </span>
                   <a
                     href={`/documents/${ad.document.id}`}
-                    className="truncate text-sm text-gray-300 hover:text-brand-400 transition-colors"
+                    className="truncate text-sm text-gray-300 hover:text-emerald-400 transition-colors"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {ad.document.title}

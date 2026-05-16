@@ -87,7 +87,7 @@ export function StatusUpdater({ applicationId, currentStatus }: StatusUpdaterPro
   return (
     <Card>
       <CardContent className="p-5">
-        <p className="mb-5 text-xs font-semibold uppercase tracking-wider text-gray-600">
+        <p className="mb-5 font-mono text-[10px] font-medium uppercase tracking-wider text-gray-500">
           Pipeline
         </p>
 
@@ -98,16 +98,29 @@ export function StatusUpdater({ applicationId, currentStatus }: StatusUpdaterPro
             const isComplete = !isRejected && i < pipelineIndex;
             const isFuture = isRejected || i > pipelineIndex;
             const isLoading = updating === step;
+            const connectorFilled = !isRejected && i < pipelineIndex;
 
             return (
-              <div key={step} className="flex flex-1 items-start">
+              <div key={step} className="relative flex flex-1 flex-col items-center">
+                {/* Connector — spans exactly from this circle's center to the next */}
+                {i < PIPELINE.length - 1 && (
+                  <div className="absolute top-5 left-[calc(50%+24px)] h-0.5 w-[calc(100%-48px)] -translate-y-1/2 overflow-hidden rounded-full bg-gray-800">
+                    <motion.div
+                      className="absolute inset-y-0 left-0 bg-gray-600"
+                      initial={{ width: "0%" }}
+                      animate={{ width: connectorFilled ? "100%" : "0%" }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: i * 0.06 }}
+                    />
+                  </div>
+                )}
+
                 {/* Step + label */}
                 <motion.button
                   onClick={() => updateStatus(step)}
                   disabled={!!updating}
                   whileHover={!updating ? { scale: 1.05 } : {}}
                   whileTap={!updating ? { scale: 0.96 } : {}}
-                  className="group flex flex-1 flex-col items-center gap-2 cursor-pointer disabled:cursor-wait"
+                  className="group relative z-10 flex flex-col items-center gap-2 cursor-pointer disabled:cursor-wait"
                 >
                   {/* Circle */}
                   <div className={cn(
@@ -119,7 +132,7 @@ export function StatusUpdater({ applicationId, currentStatus }: StatusUpdaterPro
                   )}>
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-xl bg-gradient-to-br from-brand-500 to-green-700"
+                        className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700"
                         layoutId="pipelineActive"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
@@ -132,27 +145,13 @@ export function StatusUpdater({ applicationId, currentStatus }: StatusUpdaterPro
                   {/* Label */}
                   <span className={cn(
                     "text-xs font-medium transition-colors text-center whitespace-nowrap",
-                    isActive && "text-brand-400",
+                    isActive && "text-emerald-400",
                     isComplete && "text-gray-500 group-hover:text-gray-400",
                     isFuture && "text-gray-700 group-hover:text-gray-600",
                   )}>
                     {STEP_META[step].label}
                   </span>
                 </motion.button>
-
-                {/* Connector */}
-                {i < PIPELINE.length - 1 && (
-                  <div className="mt-5 flex-1 px-1">
-                    <div className="relative h-0.5 w-full overflow-hidden rounded-full bg-gray-800">
-                      <motion.div
-                        className="absolute inset-y-0 left-0 bg-gray-600"
-                        initial={{ width: "0%" }}
-                        animate={{ width: !isRejected && i < pipelineIndex ? "100%" : "0%" }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: i * 0.06 }}
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}

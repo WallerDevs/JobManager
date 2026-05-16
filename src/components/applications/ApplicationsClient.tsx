@@ -61,7 +61,7 @@ export function ApplicationsClient({ applications }: ApplicationsClientProps) {
             placeholder="Search applications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] py-2.5 pl-10 pr-4 text-sm text-gray-100 placeholder:text-gray-600 backdrop-blur-sm transition-all duration-150 focus:border-emerald-500/40 focus:bg-white/[0.06] focus:outline-none focus:ring-1 focus:ring-emerald-500/30"
+            className="w-full rounded-lg border border-white/[0.07] bg-white/[0.03] py-2.5 pl-10 pr-4 text-sm text-gray-100 placeholder:text-gray-700 transition-all duration-150 focus:border-emerald-500/40 focus:bg-white/[0.05] focus:outline-none focus:ring-1 focus:ring-emerald-500/25"
           />
         </div>
         <Link href="/applications/new">
@@ -75,7 +75,7 @@ export function ApplicationsClient({ applications }: ApplicationsClientProps) {
       </div>
 
       {/* Filter tabs */}
-      <div className="flex w-fit flex-wrap items-center gap-0.5 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-1 backdrop-blur-sm">
+      <div className="flex w-fit flex-wrap items-center gap-0.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-1">
         {(["ALL", ...ALL_STATUSES] as const).map((status) => {
           const isActive = activeStatus === status;
           const count = counts[status];
@@ -83,12 +83,12 @@ export function ApplicationsClient({ applications }: ApplicationsClientProps) {
             <button
               key={status}
               onClick={() => setActiveStatus(status)}
-              className="relative flex cursor-pointer items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-colors duration-150"
+              className="relative flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150"
             >
               {isActive && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 rounded-xl bg-white/[0.08] shadow-sm"
+                  className="absolute inset-0 rounded-lg bg-white/[0.07]"
                   transition={{ type: "spring", stiffness: 450, damping: 35 }}
                 />
               )}
@@ -98,8 +98,8 @@ export function ApplicationsClient({ applications }: ApplicationsClientProps) {
               <span className={`relative z-10 transition-colors ${isActive ? "text-gray-100" : "text-gray-600 hover:text-gray-400"}`}>
                 {status === "ALL" ? "All" : STATUS_LABELS[status as ApplicationStatus]}
               </span>
-              <span className={`relative z-10 rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums transition-colors ${
-                isActive ? "bg-white/[0.12] text-gray-200" : "bg-white/[0.04] text-gray-600"
+              <span className={`relative z-10 font-mono rounded px-1.5 py-0.5 text-[9px] font-medium tabular-nums transition-colors ${
+                isActive ? "bg-white/[0.1] text-gray-300" : "bg-white/[0.03] text-gray-700"
               }`}>
                 {count}
               </span>
@@ -118,19 +118,19 @@ export function ApplicationsClient({ applications }: ApplicationsClientProps) {
           transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
         >
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-14 text-center backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-4 rounded-xl border border-white/[0.06] bg-white/[0.015] p-14 text-center">
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.1, type: "spring", stiffness: 300, damping: 25 }}
               >
-                <img src="/logo.png" width={52} height={52} alt="JobManager" className="rounded-2xl opacity-60" />
+                <img src="/logo.png" width={48} height={48} alt="JobManager" className="rounded-xl opacity-60" />
               </motion.div>
               <div>
-                <p className="text-sm font-semibold text-gray-100">
+                <p className="font-display text-lg italic font-semibold text-gray-200">
                   {applications.length === 0 ? "No applications yet" : "No results"}
                 </p>
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 font-mono text-[11px] text-gray-600">
                   {applications.length === 0
                     ? "Track every role you apply to in one place."
                     : "Try a different search or filter."}
