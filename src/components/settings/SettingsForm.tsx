@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 interface Props {
   initialName: string;
@@ -21,25 +22,29 @@ const item = {
 function SectionCard({
   title,
   danger,
+  className,
   children,
 }: {
   title: string;
   danger?: boolean;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
     <motion.section
       variants={item}
-      className={`relative overflow-hidden rounded-xl border bg-white/[0.025] shadow-[0_1px_2px_rgba(0,0,0,0.4),0_6px_24px_rgba(0,0,0,0.25)] ${
-        danger ? "border-red-500/20" : "border-white/[0.07]"
-      }`}
+      className={cn(
+        "relative flex min-h-0 flex-col overflow-hidden rounded-xl border bg-white/[0.025] shadow-[0_1px_2px_rgba(0,0,0,0.4),0_6px_24px_rgba(0,0,0,0.25)]",
+        danger ? "border-red-500/20" : "border-white/[0.07]",
+        className
+      )}
     >
       <div
         className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent ${
           danger ? "via-red-500/30" : "via-white/[0.07]"
         }`}
       />
-      <div className={`border-b px-5 py-4 ${danger ? "border-red-500/15" : "border-white/[0.06]"}`}>
+      <div className={`shrink-0 border-b px-4 py-3 ${danger ? "border-red-500/15" : "border-white/[0.06]"}`}>
         <h2
           className={`font-mono text-[10px] font-medium uppercase tracking-wider ${
             danger ? "text-red-400/80" : "text-gray-500"
@@ -48,7 +53,7 @@ function SectionCard({
           {title}
         </h2>
       </div>
-      {children}
+      <div className="min-h-0 flex-1">{children}</div>
     </motion.section>
   );
 }
@@ -145,27 +150,18 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
         hidden: {},
         visible: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
       }}
-      className="mx-auto flex max-w-2xl flex-col gap-5"
+      className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-4"
     >
-      {/* Page header */}
-      <motion.div variants={item} className="border-b border-white/[0.05] pb-5">
-        <p className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-emerald-500/60">
-          Account
-        </p>
-        <h1 className="mt-2 font-display text-3xl font-semibold italic tracking-tight text-white">
-          Settings
-        </h1>
-        <p className="mt-1.5 text-sm text-gray-500">Manage your profile, password, and account.</p>
-      </motion.div>
-
       {/* Profile */}
       <SectionCard title="Profile">
-        <form onSubmit={saveProfile} className="flex flex-col gap-4 p-5">
+        <form onSubmit={saveProfile} className="flex h-full flex-col gap-3 p-4">
           {profileError && <Notice kind="error">{profileError}</Notice>}
           {profileSuccess && <Notice kind="success">Profile updated.</Notice>}
-          <Input id="name" label="Name" required value={name} onChange={(e) => setName(e.target.value)} />
-          <Input id="email" label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-          <div className="flex justify-end pt-1">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Input id="name" label="Name" required value={name} onChange={(e) => setName(e.target.value)} />
+            <Input id="email" label="Email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="mt-auto flex justify-end pt-1">
             <Button type="submit" loading={profileLoading}>Save changes</Button>
           </div>
         </form>
@@ -173,44 +169,46 @@ export function SettingsForm({ initialName, initialEmail }: Props) {
 
       {/* Password */}
       <SectionCard title="Change password">
-        <form onSubmit={changePassword} className="flex flex-col gap-4 p-5">
+        <form onSubmit={changePassword} className="flex h-full flex-col gap-3 p-4">
           {passwordError && <Notice kind="error">{passwordError}</Notice>}
           {passwordSuccess && <Notice kind="success">Password changed.</Notice>}
-          <Input
-            id="currentPassword"
-            label="Current password"
-            type="password"
-            required
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-          <Input
-            id="newPassword"
-            label="New password"
-            type="password"
-            required
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="At least 8 characters"
-          />
-          <div className="flex justify-end pt-1">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Input
+              id="currentPassword"
+              label="Current password"
+              type="password"
+              required
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <Input
+              id="newPassword"
+              label="New password"
+              type="password"
+              required
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="At least 8 characters"
+            />
+          </div>
+          <div className="mt-auto flex justify-end pt-1">
             <Button type="submit" loading={passwordLoading}>Change password</Button>
           </div>
         </form>
       </SectionCard>
 
       {/* Danger zone */}
-      <SectionCard title="Danger zone" danger>
-        <div className="p-5">
-          <p className="mb-4 text-sm text-gray-500">
+      <SectionCard title="Danger zone" danger className="lg:col-span-2">
+        <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+          <p className="text-sm text-gray-500 sm:min-w-0 sm:flex-1">
             Permanently delete your account and all associated data. This cannot be undone.
           </p>
           {!deleteConfirm ? (
-            <Button variant="secondary" onClick={() => setDeleteConfirm(true)}>
+            <Button variant="secondary" className="shrink-0" onClick={() => setDeleteConfirm(true)}>
               Delete account
             </Button>
           ) : (
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">
               <span className="text-sm text-red-400">Are you sure?</span>
               <Button variant="secondary" onClick={() => setDeleteConfirm(false)}>
                 Cancel
