@@ -13,7 +13,11 @@ function getGreeting(name: string) {
   const hour = new Date().getHours();
   const period = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   const firstName = name.split(" ")[0];
-  return `${period}, ${firstName}`;
+  return { period, firstName, full: `${period}, ${firstName}.` };
+}
+
+function getDateString() {
+  return new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 }
 
 export default async function DashboardPage() {
@@ -41,44 +45,60 @@ export default async function DashboardPage() {
   const total = statusCounts.reduce((sum, s) => sum + s._count._all, 0);
   const statuses: ApplicationStatus[] = ["DRAFT", "SENT", "INTERVIEW", "OFFER", "REJECTED"];
   const greeting = getGreeting(session!.user.name ?? "there");
+  const dateStr = getDateString();
 
   return (
     <DashboardShell title="Dashboard">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-7">
 
-        {/* Welcome banner */}
+        {/* Typographic hero */}
         <div className="animate-slide-up">
-          <h2 className="text-xl font-bold text-gray-100">
-            {greeting}
-          </h2>
-          <p className="mt-0.5 text-sm text-gray-500">
-            {total === 0
-              ? "Start tracking your applications below."
-              : `${total} application${total !== 1 ? "s" : ""} in your pipeline.`}
-          </p>
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between pb-6 border-b border-white/[0.05]">
+            <div>
+              <p className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-emerald-500/60">
+                {dateStr}
+              </p>
+              <h2 className="mt-3 font-display text-5xl font-semibold italic leading-tight tracking-tight text-white sm:text-[3.25rem]">
+                {greeting.full}
+              </h2>
+              <p className="mt-2 text-sm text-gray-500">
+                {total === 0
+                  ? "Start tracking your job applications below."
+                  : `${total} application${total !== 1 ? "s" : ""} in your pipeline.`}
+              </p>
+            </div>
+            <Link href="/applications/new" className="shrink-0">
+              <Button>
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                New application
+              </Button>
+            </Link>
+          </div>
         </div>
 
-        {/* Animated stat cards with number counters */}
+        {/* Stat cards */}
         <StatCards counts={countsByStatus} statuses={statuses} />
 
         {/* Recent applications */}
         <div>
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-gray-100">Recent applications</h3>
-              <p className="text-xs text-gray-600">{total} total</p>
+              <h3 className="font-display text-xl font-semibold italic tracking-tight text-gray-100">Recent applications</h3>
+              <p className="mt-0.5 font-mono text-[10px] text-gray-700">{total} total</p>
             </div>
             <Link href="/applications">
-              <Button variant="ghost" size="sm" className="text-gray-500">View all</Button>
+              <Button variant="ghost" size="sm" className="text-gray-500 text-xs">View all →</Button>
             </Link>
           </div>
 
           {applications.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-white/[0.07] bg-gray-900/50 p-10 flex flex-col items-center gap-4 text-center">
-              <img src="/logo.png" width={56} height={56} alt="JobManager" className="rounded-2xl opacity-80" />
+            <div className="rounded-xl border border-dashed border-white/[0.06] bg-white/[0.015] p-10 flex flex-col items-center gap-4 text-center">
+              <img src="/logo.png" width={48} height={48} alt="JobManager" className="rounded-xl opacity-60" />
               <div>
-                <p className="text-sm font-semibold text-gray-100">No applications yet</p>
-                <p className="mt-1 text-xs text-gray-500">Add your first one to get started.</p>
+                <p className="font-display text-lg italic font-semibold text-gray-200">No applications yet</p>
+                <p className="mt-1 font-mono text-[11px] text-gray-600">Add your first one to get started.</p>
               </div>
               <Link href="/applications/new">
                 <Button size="sm">New application</Button>

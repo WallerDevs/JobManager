@@ -12,19 +12,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-r from-brand-600 to-violet-600 text-white shadow-sm hover:from-brand-500 hover:to-violet-500 hover:shadow-glow-sm focus-visible:ring-brand-500",
+    "bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 hover:shadow-[0_0_18px_rgba(16,185,129,0.25)] focus-visible:ring-emerald-500",
   secondary:
-    "bg-gray-800 text-gray-200 border border-gray-700 shadow-sm hover:bg-gray-700 hover:border-gray-600 focus-visible:ring-gray-600",
+    "bg-white/[0.05] text-gray-200 border border-white/[0.09] hover:bg-white/[0.09] hover:border-white/[0.16] focus-visible:ring-gray-600",
   ghost:
-    "text-gray-400 hover:bg-white/[0.06] hover:text-gray-200 focus-visible:ring-gray-600",
+    "text-gray-400 hover:bg-white/[0.05] hover:text-gray-200 focus-visible:ring-gray-600",
   danger:
-    "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm hover:from-red-500 hover:to-rose-500 focus-visible:ring-red-500",
+    "bg-red-600/90 text-white shadow-sm hover:bg-red-500 focus-visible:ring-red-500",
 };
 
 const sizeClasses: Record<Size, string> = {
   sm: "px-3 py-1.5 text-xs font-medium gap-1.5",
-  md: "px-4 py-2 text-sm font-medium gap-2",
-  lg: "px-5 py-2.5 text-sm font-semibold gap-2",
+  md: "px-3.5 py-2 text-sm font-medium gap-2",
+  lg: "px-4.5 py-2.5 text-sm font-semibold gap-2",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -35,8 +35,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         className={cn(
           "inline-flex items-center justify-center rounded-lg transition-all duration-150",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-950",
-          "disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] cursor-pointer",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#030a06]",
+          "disabled:pointer-events-none disabled:opacity-40 active:scale-[0.97] cursor-pointer",
           variantClasses[variant],
           sizeClasses[size],
           className

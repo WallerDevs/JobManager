@@ -32,7 +32,8 @@ export function AnimatedGrid({ children, className }: AnimatedGridProps) {
     <motion.div
       variants={containerVariants}
       initial="hidden"
-      animate="show"
+      whileInView="show"
+      viewport={{ once: true, margin: "-50px" }}
       className={className}
     >
       {children}

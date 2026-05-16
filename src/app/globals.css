@@ -8,19 +8,19 @@
   }
 
   html {
-    font-family: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
   }
 
   ::selection {
-    @apply bg-brand-600 text-white;
+    @apply bg-emerald-600 text-white;
   }
 
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
@@ -28,11 +28,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full;
+    @apply bg-white/[0.08] rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/20;
+    @apply bg-white/[0.16];
   }
 }
 
@@ -45,6 +45,17 @@
     animation: slide-up 0.3s cubic-bezier(0.22,1,0.36,1) both;
   }
 
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
+  }
+
+  .font-display {
+    font-family: var(--font-display), ui-serif, serif;
+  }
+
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
 }
 
 @keyframes fade-in {
@@ -57,3 +68,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

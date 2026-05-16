@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/caspe/.claude/**)",
+      "Bash(ls \"C:/Users/caspe/.agents/skills/frontend-design/\")",
+      "Read(//c/Users/caspe/.agents/skills/frontend-design/**)",
+      "Bash(mkdir -p \"C:/Users/caspe/.claude/skills\")",
+      "Bash(cp -r \"C:/Users/caspe/.agents/skills/frontend-design\" \"C:/Users/caspe/.claude/skills/frontend-design\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\caspe\\\\OneDrive\\\\Desktop\\\\JobManager\" -Recurse -Directory)",
+      "Bash(Select-Object FullName)",
+      "Bash(grep -E \"\\\\.\\(tsx?|json\\)$\")",
+      "Bash(npx tsc *)",
+      "Skill(frontend-design)",
+      "Skill(frontend-design:*)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\caspe\\\\OneDrive\\\\Desktop\\\\JobManager\\\\src\\\\components\\\\marketing\\\\SuitcaseScene.tsx\")"
+    ]
+  }
+}
